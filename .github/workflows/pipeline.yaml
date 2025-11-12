@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+
   pull_request:
     branches: [main]
     types: [opened, synchronize]
@@ -36,8 +37,8 @@ jobs:
         run: npm run test:e2e
 
       - name: Deploy
-        # Only run this step if the branch is main
-        if: github.ref == 'refs/heads/main'
+        # Only run this step for the main branch
+        if: ${{ github.event_name == 'push' }}
         env:
           deploy_url: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
         run: curl "$deploy_url"
